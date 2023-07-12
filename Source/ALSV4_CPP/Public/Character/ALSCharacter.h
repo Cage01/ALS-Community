@@ -61,6 +61,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS|Component")
 	TObjectPtr<UStaticMeshComponent> StaticMesh = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS|Component")
+	TObjectPtr<AActor> AttachedActor = nullptr;
 private:
 	bool bNeedsColorReset = false;
 };
