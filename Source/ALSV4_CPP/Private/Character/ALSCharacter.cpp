@@ -30,9 +30,11 @@ void AALSCharacter::ClearHeldObject()
 	SkeletalMesh->SetAnimInstanceClass(nullptr);
 }
 
-void AALSCharacter::AttachToHand(UStaticMesh* NewStaticMesh, USkeletalMesh* NewSkeletalMesh, UClass* NewAnimClass,
+void AALSCharacter::AttachToHand(UStaticMesh* NewStaticMesh, USkeletalMesh* NewSkeletalMesh, AActor* NewActor, UClass* NewAnimClass,
                                  bool bLeftHand, FVector Offset)
 {
+	bool bContainsActor = false;
+	
 	ClearHeldObject();
 
 	if (IsValid(NewStaticMesh))
@@ -46,6 +48,9 @@ void AALSCharacter::AttachToHand(UStaticMesh* NewStaticMesh, USkeletalMesh* NewS
 		{
 			SkeletalMesh->SetAnimInstanceClass(NewAnimClass);
 		}
+	} else if (IsValid(NewActor))
+	{
+		bContainsActor = true;
 	}
 
 	FName AttachBone;
@@ -58,9 +63,15 @@ void AALSCharacter::AttachToHand(UStaticMesh* NewStaticMesh, USkeletalMesh* NewS
 		AttachBone = TEXT("VB RHS_ik_hand_gun");
 	}
 
-	HeldObjectRoot->AttachToComponent(GetMesh(),
-	                                  FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachBone);
-	HeldObjectRoot->SetRelativeLocation(Offset);
+	if (bContainsActor)
+	{
+		NewActor->AttachToComponent(HeldObjectRoot, FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachBone);
+		NewActor->SetActorRelativeLocation(Offset);
+	} else
+	{
+		HeldObjectRoot->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, AttachBone);
+		HeldObjectRoot->SetRelativeLocation(Offset);
+	}
 }
 
 void AALSCharacter::RagdollStart()
