@@ -30,7 +30,7 @@ void AALSCharacter::ClearHeldObject()
 	SkeletalMesh->SetAnimInstanceClass(nullptr);
 
 	//Might not be the right function
-	AttachedActor->BeginDestroy();
+	//AttachedActor->BeginDestroy();
 }
 
 void AALSCharacter::AttachToHand(UStaticMesh* NewStaticMesh, USkeletalMesh* NewSkeletalMesh, AActor* NewActor, UClass* NewAnimClass,
